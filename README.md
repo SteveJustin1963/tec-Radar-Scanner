@@ -190,3 +190,49 @@ void app_main() {
    - Listens on the designated GPIO pin for pulses from the master.
    - Upon receiving a pulse, it marks an object’s position on its local grid.
    - This setup could be expanded to process signals or combine data for more accurate object location.
+
+ 
+### To connect two **ESP32 modules** with GPIO 
+for communication and UART for serial data output, here’s the circuit setup you’ll need:
+
+### Components Required:
+1. **Two ESP32 modules**
+2. **Resistor (optional, for current limiting, e.g., 330 ohms)**
+3. **Serial-to-USB adapter** for connecting the master ESP32’s UART output to a computer if needed
+
+### Pin Connections:
+
+1. **Master ESP32 Connections**:
+   - **GPIO Pin 4** (communication output to slave ESP32): Connects to **GPIO Pin 4** on the slave ESP32.
+   - **UART TX Pin (GPIO 1)**: Connects to a serial display or **Serial-to-USB adapter** if you want to view the ASCII map output on a computer.
+   
+2. **Slave ESP32 Connections**:
+   - **GPIO Pin 4** (communication input from master ESP32): Connects to **GPIO Pin 4** on the master ESP32.
+
+### Circuit Diagram
+
+#### Master ESP32
+- **GPIO4 (Output)** → Connect directly to **GPIO4** of the slave ESP32.
+- **UART TX (GPIO 1)** → Serial-to-USB adapter (optional) to view the ASCII map on a computer.
+
+#### Slave ESP32
+- **GPIO4 (Input)** ← Connect directly from **GPIO4** of the master ESP32.
+
+#### Resistor (Optional)
+If desired, place a **330-ohm resistor** in series between the GPIO4 pins on the master and slave to limit current, though direct GPIO connections are usually safe at low frequencies and with short wiring.
+
+```plaintext
+          +-----------------+           +-----------------+
+          |   Master ESP32  |           |   Slave ESP32   |
+          |                 |           |                 |
+          |       GPIO4 ----|-----------|---- GPIO4       |
+          |      (Output)   |           |    (Input)      |
+          |                 |           |                 |
+          |   UART TX (1) --|--> Serial Display or        |
+          |                 |    Serial-to-USB Adapter    |
+          +-----------------+           +-----------------+
+```
+
+### Additional Notes:
+- **Serial Output**: The master ESP32 uses **UART at 4800 baud** for ASCII output, which you can view using a serial monitor if connected to a computer through a USB adapter.
+- **Power Supply**: Both ESP32 modules need power, either through USB or a regulated 3.3V source.
